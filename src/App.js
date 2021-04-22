@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import DeckGL from '@deck.gl/react';
+import { OrbitView } from '@deck.gl/core';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <DeckGL
+        parameters={{
+          clearColor: [0, 0, 0, 1]
+        }}
+        initialViewState={{
+          rotationX: 45,
+          rotationOrbit: -45,
+          zoom: 5,
+          pitch: 0
+        }}
+        views={new OrbitView({
+          minZoom: 0.1,
+          maxZoom: 10,
+          minRotationX: -90,
+          maxRotationX: 90,
+          target: [0, 0, 0]
+        })}
+        controller={true}
+      />
     </div>
   );
 }
