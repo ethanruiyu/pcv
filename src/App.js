@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import DeckGL from '@deck.gl/react';
 import { OrbitView } from '@deck.gl/core';
-import { Row, Col, Container } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import { Sidebar } from './widgets/Sidebar'
 import { LineLayer } from '@deck.gl/layers';
 
@@ -40,11 +40,30 @@ const App = () => {
       visible: axisVisible
     })
   ]
+
+  const handleChange = (attrs) => {
+    setAxisVisible(attrs.showAxis === '1')
+  }
+
+  const handleDragEnter = () => {
+
+  }
+
+  const handleDrop = (e) => {
+    console.log(e)
+  }
+
   return (
-    <div className='app' fluid={true}>
+    <div className='app'
+      onDragEnter={handleDragEnter}
+      onDragOver={(e) => {
+        e.preventDefault()
+      }}
+      onDrop={handleDrop}
+    >
       <Row className='h-100 m-0'>
         <Col className='p-0 h-100' xl='2'>
-          <Sidebar />
+          <Sidebar onChange={handleChange} />
         </Col>
         <Col className='p-0 h-100' xl='10'>
           <DeckGL
