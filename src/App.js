@@ -1,11 +1,24 @@
 import React, { useState } from 'react'
 import DeckGL from '@deck.gl/react';
-import { OrbitView } from '@deck.gl/core';
+import { OrbitView, COORDINATE_SYSTEM } from '@deck.gl/core';
 import { Row, Col } from 'reactstrap'
 import { Sidebar } from './widgets/Sidebar'
-import { LineLayer } from '@deck.gl/layers';
-
+import { LineLayer, PointCloudLayer } from '@deck.gl/layers';
+import { DracoLoader } from '@loaders.gl/draco'
+import { registerLoaders } from '@loaders.gl/core';
+import { load } from '@loaders.gl/core';
 import './App.css';
+
+registerLoaders(DracoLoader);
+let GlobalPoints = new Float32Array()
+
+
+function concatTypedArrays(a, b) { // a, b TypedArray of same type
+  var c = new (a.constructor)(a.length + b.length);
+  c.set(a, 0);
+  c.set(b, a.length);
+  return c;
+}
 
 const App = () => {
   const [axis] = useState([
@@ -26,8 +39,24 @@ const App = () => {
     },
   ])
   const [axisVisible, setAxisVisible] = useState(true)
+  const [drag, setDrag] = useState(false)
+  const [data, setData] = useState()
 
   const layers = [
+    new PointCloudLayer({
+      id: 'point-cloud-layer',
+      data: data,
+      // loader: [DracoLoader],
+      coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
+      getNormal: [255, 255, 255],
+      getColor: [255, 255, 255],
+      opacity: 1,
+      pointSize: 0.3,
+      material: {
+        ambient: 1,
+        diffuse: 1
+      }
+    }),
     new LineLayer({
       id: 'axis-layer',
       data: axis,
@@ -49,8 +78,48 @@ const App = () => {
 
   }
 
+  function convertLoadersMeshToDeckPointCloudData(attributes) {
+    GlobalPoints = concatTypedArrays(GlobalPoints, attributes.POSITION.value)
+    attributes.POSITION.value = GlobalPoints
+
+    // GlobalColors = concatTypedArrays(GlobalColors, attributes.COLOR_0.value)
+    // attributes.COLOR_0.value = GlobalColors
+    const deckAttributes = {
+      getPosition: attributes.POSITION
+    };
+    if (attributes.COLOR_0) {
+      deckAttributes.getColor = attributes.COLOR_0
+    }
+    // Check PointCloudLayer docs for other supported props?
+    // for (let i = 0; i <attributes.POSITION.value.length; i += 2 ) {
+    //   console.log(attributes.POSITION.value[i])
+    // }
+    return {
+      length: attributes.POSITION.value.length / attributes.POSITION.size,
+      attributes: deckAttributes
+    };
+  }
+  
+  const onMapLoad = ({ header, loaderData, attributes, progress }) => {
+    console.log(attributes)
+    let chunk = convertLoadersMeshToDeckPointCloudData(attributes)
+    // console.log(chunk)
+    setData(chunk)
+    chunk = {}
+  }
+
   const handleDrop = (e) => {
-    console.log(e)
+    e.preventDefault()
+    e.stopPropagation()
+    setDrag(false)
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const reader = new FileReader()
+      reader.onload = async (e) => {
+        const b = new Blob([e.target.result])
+        load(b, { worker: false }).then(onMapLoad);
+      };
+      reader.readAsArrayBuffer(e.dataTransfer.files[0])
+    }
   }
 
   return (
