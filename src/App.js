@@ -1,24 +1,17 @@
 import React, { useState } from 'react'
 import DeckGL from '@deck.gl/react';
-import { OrbitView, COORDINATE_SYSTEM } from '@deck.gl/core';
+import { OrbitView, COORDINATE_SYSTEM, _CameraLight as CameraLight } from '@deck.gl/core';
 import { Row, Col } from 'reactstrap'
 import { Sidebar } from './widgets/Sidebar'
 import { LineLayer, PointCloudLayer } from '@deck.gl/layers';
 import { DracoLoader } from '@loaders.gl/draco'
+import { LASLoader } from '@loaders.gl/las';
+import { OBJLoader } from '@loaders.gl/obj';
 import { registerLoaders } from '@loaders.gl/core';
 import { load } from '@loaders.gl/core';
 import './App.css';
 
-registerLoaders(DracoLoader);
-let GlobalPoints = new Float32Array()
-
-
-function concatTypedArrays(a, b) { // a, b TypedArray of same type
-  var c = new (a.constructor)(a.length + b.length);
-  c.set(a, 0);
-  c.set(b, a.length);
-  return c;
-}
+registerLoaders([DracoLoader, LASLoader, OBJLoader]);
 
 const App = () => {
   const [axis] = useState([
@@ -41,6 +34,7 @@ const App = () => {
   const [axisVisible, setAxisVisible] = useState(true)
   const [drag, setDrag] = useState(false)
   const [data, setData] = useState()
+  const [pointSize, setPointSize] = useState(0.3)
 
   const layers = [
     new PointCloudLayer({
@@ -51,7 +45,7 @@ const App = () => {
       getNormal: [255, 255, 255],
       getColor: [255, 255, 255],
       opacity: 1,
-      pointSize: 0.3,
+      pointSize: pointSize,
       material: {
         ambient: 1,
         diffuse: 1
@@ -71,35 +65,36 @@ const App = () => {
   ]
 
   const handleChange = (attrs) => {
-    setAxisVisible(attrs.showAxis === '1')
+    if (attrs.showAxis) {
+      setAxisVisible(attrs.showAxis === '1')
+    }
+    if (attrs.pointSize) {
+      setPointSize(parseFloat(attrs.pointSize))
+    }
   }
 
   const handleDragEnter = () => {
 
   }
 
-  function convertLoadersMeshToDeckPointCloudData(attributes) {
-    GlobalPoints = concatTypedArrays(GlobalPoints, attributes.POSITION.value)
-    attributes.POSITION.value = GlobalPoints
+  const handleDragOver = (e) => {
+    e.preventDefault()
+  }
 
-    // GlobalColors = concatTypedArrays(GlobalColors, attributes.COLOR_0.value)
-    // attributes.COLOR_0.value = GlobalColors
+  function convertLoadersMeshToDeckPointCloudData(attributes) {
     const deckAttributes = {
       getPosition: attributes.POSITION
     };
     if (attributes.COLOR_0) {
-      deckAttributes.getColor = attributes.COLOR_0
+      deckAttributes.getColor = attributes.COLOR_0;
     }
     // Check PointCloudLayer docs for other supported props?
-    // for (let i = 0; i <attributes.POSITION.value.length; i += 2 ) {
-    //   console.log(attributes.POSITION.value[i])
-    // }
     return {
       length: attributes.POSITION.value.length / attributes.POSITION.size,
       attributes: deckAttributes
     };
   }
-  
+
   const onMapLoad = ({ header, loaderData, attributes, progress }) => {
     console.log(attributes)
     let chunk = convertLoadersMeshToDeckPointCloudData(attributes)
@@ -125,9 +120,7 @@ const App = () => {
   return (
     <div className='app'
       onDragEnter={handleDragEnter}
-      onDragOver={(e) => {
-        e.preventDefault()
-      }}
+      onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
       <Row className='h-100 m-0'>
@@ -136,6 +129,10 @@ const App = () => {
         </Col>
         <Col className='p-0 h-100' xl='10'>
           <DeckGL
+            light={[new CameraLight({
+              color: [255, 255, 255],
+              intensity: 1
+            })]}
             parameters={{
               clearColor: [0, 0, 0, 1]
             }}
