@@ -33,6 +33,7 @@ const App = () => {
   ])
   const [axisVisible, setAxisVisible] = useState(true)
   const [drag, setDrag] = useState(false)
+  const [dragCounter, setDragCounter] = useState(0)
   const [data, setData] = useState()
   const [pointSize, setPointSize] = useState(0.3)
 
@@ -73,12 +74,33 @@ const App = () => {
     }
   }
 
-  const handleDragEnter = () => {
+  const handleDragEnter = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    let tmp = dragCounter + 1
+    setDragCounter(tmp)
 
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+      if (drag === false) {
+        setDrag(true)
+      }
+    }
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    let tmp = dragCounter - 1
+    setDragCounter(tmp)
+    if (tmp > 0) {
+      return
+    }
+    setDrag(false)
   }
 
   const handleDragOver = (e) => {
     e.preventDefault()
+    e.stopPropagation()
   }
 
   function convertLoadersMeshToDeckPointCloudData(attributes) {
@@ -120,9 +142,38 @@ const App = () => {
   return (
     <div className='app'
       onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
+      {drag &&
+        <div
+          style={{
+            border: 'dashed grey 4px',
+            backgroundColor: 'rgba(255,255,255,.8)',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 9999
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              right: 0,
+              left: 0,
+              textAlign: 'center',
+              color: 'grey',
+              fontSize: 36
+            }}
+          >
+            <div>drop here :)</div>
+          </div>
+        </div>
+      }
       <Row className='h-100 m-0'>
         <Col className='p-0 h-100' xl='2'>
           <Sidebar onChange={handleChange} />
