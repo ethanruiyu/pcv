@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DeckGL from '@deck.gl/react';
 import { OrbitView, COORDINATE_SYSTEM, _CameraLight as CameraLight } from '@deck.gl/core';
 import { Row, Col } from 'reactstrap'
@@ -139,6 +139,12 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    document
+      .getElementById("deckgl-wrapper")
+      .addEventListener("contextmenu", evt => evt.preventDefault());
+  }, [])
+
   return (
     <div className='app'
       onDragEnter={handleDragEnter}
@@ -193,13 +199,7 @@ const App = () => {
               zoom: 5,
               pitch: 0
             }}
-            views={new OrbitView({
-              minZoom: 0.1,
-              maxZoom: 10,
-              minRotationX: -90,
-              maxRotationX: 90,
-              target: [0, 0, 0]
-            })}
+            views={new OrbitView()}
             controller={true}
             layers={layers}
           />
