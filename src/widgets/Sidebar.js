@@ -37,10 +37,10 @@ export const Sidebar = ({
             <span>Point Size</span>
           </Col>
           <Col xl='6'>
-            <select className='w-100'>
-              <option value='1'>1</option>
-              <option value='1'>2</option>
-              <option value='1'>3</option>
+            <select className='w-100' onChange={(e) => { onChange({ pointSize: e.target.value }) }}>
+              <option value='0.3'>1</option>
+              <option value='0.6'>2</option>
+              <option value='1.2'>3</option>
             </select>
           </Col>
         </Row>
