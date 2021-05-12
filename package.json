@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@deck.gl/core": "^8.4.13",
+    "@deck.gl/layers": "^8.4.13",
+    "@deck.gl/react": "^8.4.13",
     "@loaders.gl/core": "^2.3.13",
     "@loaders.gl/draco": "^2.3.13",
     "@loaders.gl/las": "^2.3.13",
