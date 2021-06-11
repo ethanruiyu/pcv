@@ -1,0 +1,11 @@
+// Override default variables before the import
+$body-bg: #000;
+
+html, body, #root, #root>div {
+  height: 100%;
+  background-color: #000;
+}
+
+$dark: #333333;
+
+@import 'bootstrap'
