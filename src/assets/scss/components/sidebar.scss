@@ -1,0 +1,87 @@
+@import 'bootstrap';
+
+.sidebar {
+  width: 450px;
+  left: -450px;
+  padding: 0;
+  background-color: $dark;
+  z-index: 1051;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  transition: left 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+  backface-visibility: hidden;
+  border-left: 1px solid rgba($black, 0.05);
+
+  &.open {
+    box-shadow: 0 15px 30px 0 rgba($black, 0.11), 0 5px 15px 0 rgba($black, 0.08);
+    left: 0;
+  }
+
+  .sidebar-content {
+    position: relative;
+    height: 100%;
+  }
+
+  .sidebar-close {
+    position: absolute;
+    left: 0.6rem;
+    top: 0.6rem;
+    padding: 7px;
+    width: auto;
+    z-index: 10;
+    color: $headings-color;
+    i,
+    svg {
+      font-size: 1.5rem;
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+  }
+
+  .sidebar-toggle {
+    background: $info;
+    color: $white !important;
+    display: block;
+    box-shadow: 0px -3px 8px rgba($black, 0.1);
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    position: absolute;
+    top: 50%;
+    width: 38px;
+    height: 38px;
+    right: -38px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+  }
+
+  .color-box {
+    height: 24px;
+    width: 24px;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    position: relative;
+    &.selected {
+      &:after {
+        content: '';
+        border: 1px solid $info;
+        height: 30px;
+        width: 30px;
+        top: -3px;
+        left: -3px;
+        position: absolute;
+        border-radius: 0.5rem;
+      }
+      &.border {
+        &:after {
+          top: -4px;
+          left: -4px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+// Override default variables before the import
+$body-bg: #000;
+
+html, body, #root, #root>div {
+  height: 100%;
+  background-color: #000;
+  margin: 0px;
+}
+
+$dark: #333333;
+$secondary: #343a40;
+@import './components/sidebar.scss'
