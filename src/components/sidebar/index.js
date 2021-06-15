@@ -15,13 +15,18 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import classnames from 'classnames'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import Select from 'react-select'
-import Slider, { Range } from 'rc-slider';
+import Slider from 'rc-slider';
 
 // ** Custom Components
 import AppCollapse from '../app-collapse'
+import themeConfig from '../../configs/themeConfig'
 
+// ** Styles
 import "react-perfect-scrollbar/dist/css/styles.css";
 import 'rc-slider/assets/index.css';
+
+// ** Mobx
+import Mobx from '../../mobx'
 
 const selectStyles = {
   option: (provided, state) => ({
@@ -33,7 +38,6 @@ const selectStyles = {
   })
 }
 
-
 const ExampleOptions = [
   { value: 0, label: 'bunny.obj' },
   { value: 1, label: 'bunny.drc' },
@@ -44,6 +48,12 @@ const PointSizeOptions = [
   { value: 0.3, label: '1' },
   { value: 0.6, label: '2' },
   { value: 0.9, label: '4' }
+]
+
+const ColorizationOptions = [
+  { value: 0, label: 'RGB' },
+  { value: 1, label: 'Heightmap Color' },
+  { value: 2, label: 'Intensity' }
 ]
 
 const FileCollapse = [
@@ -122,7 +132,20 @@ const DataCollapse = [
           <CardText>
             <span className='font-weight-bold'>Density</span>
           </CardText>
-          <Slider min={1} max={10} step={1} defaultValue={3}   />
+          <Slider min={1} max={10} step={1} defaultValue={3} />
+        </div>
+        <hr />
+        <div className='p-3 bg-secondary'>
+          <CardText>
+            <span className='font-weight-bold'>Colorization</span>
+          </CardText>
+          <Select
+            styles={selectStyles}
+            className='react-select w-100'
+            defaultValue={ColorizationOptions[0]}
+            options={ColorizationOptions}
+            onChange={(e) => Mobx.colorizationChange(e.value)}
+          />
         </div>
       </div>
     )
@@ -145,8 +168,11 @@ const Sidebar = props => {
         {collapsed ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
       </a>
       <Card className='bg-dark text-light'>
-        <CardHeader>
-          <CardTitle tag='h4' className='row justify-content-center align-self-center'>
+        <CardHeader className='d-flex'>
+          <span className='brand-logo'>
+            <img src={themeConfig.app.appLogoImage} alt='logo' />
+          </span>
+          <CardTitle tag='h2' className=' ml-2 row justify-content-center align-self-center'>
             Point Cloud Viewer
           </CardTitle>
         </CardHeader>

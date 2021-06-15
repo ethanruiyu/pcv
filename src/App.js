@@ -5,6 +5,7 @@ import {
 } from 'reactstrap'
 
 // ** Custom Components
+import View from './components/deckgl'
 import Sidebar from './components/sidebar'
 
 const App = props => {
@@ -15,6 +16,7 @@ const App = props => {
           <Sidebar />
         </Col>
         <Col xl='9'>
+          <View />
         </Col>
       </Row>
     </div>
