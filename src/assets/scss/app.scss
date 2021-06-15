@@ -4,8 +4,9 @@ $body-bg: #000;
 html, body, #root, #root>div {
   height: 100%;
   background-color: #000;
+  margin: 0px;
 }
 
 $dark: #333333;
-
-@import 'bootstrap'
+$secondary: #343a40;
+@import './components/sidebar.scss'

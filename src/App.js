@@ -4,8 +4,7 @@ import {
   Col
 } from 'reactstrap'
 
-// ** Styles
-import './App.scss'
+// ** Custom Components
 import Sidebar from './components/sidebar'
 
 const App = props => {
