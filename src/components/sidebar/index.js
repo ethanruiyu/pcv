@@ -15,9 +15,13 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import classnames from 'classnames'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import Select from 'react-select'
+import Slider, { Range } from 'rc-slider';
 
 // ** Custom Components
 import AppCollapse from '../app-collapse'
+
+import "react-perfect-scrollbar/dist/css/styles.css";
+import 'rc-slider/assets/index.css';
 
 const selectStyles = {
   option: (provided, state) => ({
@@ -114,6 +118,12 @@ const DataCollapse = [
           />
         </div>
         <hr />
+        <div className='p-3 bg-secondary'>
+          <CardText>
+            <span className='font-weight-bold'>Density</span>
+          </CardText>
+          <Slider min={1} max={10} step={1} defaultValue={3}   />
+        </div>
       </div>
     )
   }
@@ -141,10 +151,10 @@ const Sidebar = props => {
           </CardTitle>
         </CardHeader>
         <CardBody className='p-0'>
-          <PerfectScrollbar component='div'>
+          <PerfectScrollbar component='div' style={{ maxHeight: window.innerHeight - 80 }}>
             <AppCollapse data={FileCollapse} active={[0]} />
-            <AppCollapse data={CameraCollapse} active={[0]} />
             <AppCollapse data={DataCollapse} active={[0]} />
+            <AppCollapse data={CameraCollapse} active={[0]} />
           </PerfectScrollbar>
         </CardBody>
       </Card>
