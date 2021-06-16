@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 // ** Third Party Components
 import DeckGL from '@deck.gl/react'
@@ -122,6 +122,7 @@ const View = () => {
   const [view, setView] = useState(new OrbitView())
   const [pointData, setPointData] = useState([])
   const [pointSize, setPointSize] = useState(0.5)
+  const deckRef = useRef()
 
   const axisLayer = new LineLayer({
     id: 'axis-layer',
@@ -160,12 +161,11 @@ const View = () => {
     if (Mobx.colorization === 0) {
       if (attributes.COLOR_0) {
         deckAttributes.getColor = attributes.COLOR_0;
-        console.log(deckAttributes.getColor)
       } else {
         deckAttributes.getColor = {}
       }
     } else if (Mobx.colorization === 1) {
-
+      deckAttributes.getColor = {}
     } else if (Mobx.colorization === 2) {
       if (attributes.intensity) {
         const getColor = { value: new Uint8Array(), normalized: true, size: 3 }
@@ -174,10 +174,11 @@ const View = () => {
           getColor.value = concatTypedArrays(getColor.value, rgb)
         }
         deckAttributes.getColor = getColor;
-        console.log(deckAttributes.getColor)
+      } else {
+        deckAttributes.getColor = {}
       }
     }
-
+    console.log(deckAttributes)
     // Check PointCloudLayer docs for other supported props?
     return {
       length: attributes.POSITION.value.length / attributes.POSITION.size,
@@ -220,6 +221,7 @@ const View = () => {
   return (
     <div className='h-100 position-relative'>
       <DeckGL
+        ref={deckRef}
         id='deck'
         layers={[axisLayer, pointCloudLayer]}
         initialViewState={OrbitViewState}

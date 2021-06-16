@@ -1196,7 +1196,7 @@
     cartocolor "^4.0.2"
     d3-scale "^3.2.3"
 
-"@deck.gl/core@8.4.17":
+"@deck.gl/core@8.4.17", "@deck.gl/core@^8.4.13":
   version "8.4.17"
   resolved "https://registry.yarnpkg.com/@deck.gl/core/-/core-8.4.17.tgz#28ad4cc0198787c2f7604100966fa62c4ca00f85"
   integrity sha512-YJ2s0LxiE6ySKACyqeh5XluAFZ2XKYx6QBwvrNx/HtWsFlOqB/k0ibvCn8SQQzly5r8Y0jbylROA5aDuns/rSw==
@@ -1247,7 +1247,7 @@
     d3-dsv "^1.0.8"
     expression-eval "^2.0.0"
 
-"@deck.gl/layers@8.4.17":
+"@deck.gl/layers@8.4.17", "@deck.gl/layers@^8.4.13":
   version "8.4.17"
   resolved "https://registry.yarnpkg.com/@deck.gl/layers/-/layers-8.4.17.tgz#ad1d0990e82d38d447042d0156e9c5e8fa416ab1"
   integrity sha512-a9Y/FxPpkcgaHjaWqiWzH7sRwsJGnxrItbzpbioKMHuzEWZk8vc6SOgGiarygmQPhkt78wxJwBflASC5OIjmkA==
@@ -1271,7 +1271,7 @@
     "@luma.gl/experimental" "^8.4.1"
     "@luma.gl/shadertools" "^8.4.1"
 
-"@deck.gl/react@8.4.17":
+"@deck.gl/react@8.4.17", "@deck.gl/react@^8.4.13":
   version "8.4.17"
   resolved "https://registry.yarnpkg.com/@deck.gl/react/-/react-8.4.17.tgz#180f6a85c3e040888462629de4ccb6526682dcf4"
   integrity sha512-0hU0h3m4Xf6cbhFeIEszVFAIJ9HgLxaIs5VOYwKrdwIFBA9A6tg5B+JKN8dC8vw7xVu5pyB3+HaGYnGb45VJYQ==
