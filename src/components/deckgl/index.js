@@ -11,6 +11,8 @@ import { OBJLoader } from '@loaders.gl/obj';
 import { load, registerLoaders } from '@loaders.gl/core';
 import { OrbitView, COORDINATE_SYSTEM } from '@deck.gl/core'
 import { LineLayer, PointCloudLayer } from '@deck.gl/layers'
+import { observer } from 'mobx-react-lite'
+import { DataFilterExtension } from '@deck.gl/extensions';
 
 // ** Mobx
 import Mobx from '../../mobx'
@@ -116,7 +118,7 @@ const OrbitViewState = {
 }
 
 
-const View = () => {
+const View = observer(() => {
   const [viewState, setViewState] = useState(OrbitViewState)
   const [axisHide, setAxisHide] = useState(true)
   const [view, setView] = useState(new OrbitView())
@@ -142,21 +144,40 @@ const View = () => {
     coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
     data: pointData,
     getNormal: [0, 1, 0],
-    getColor: d => d.getColor,
+    getColor: [255, 255, 255],
     opacity: 1,
     pointSize: pointSize,
     material: {
-      ambient: 0.5,
-      diffuse: 0.5,
+      // ambient: 0.5,
+      // diffuse: 0.5,
       // shininess: 1000,
       // specularColor: [255, 255, 255]
     }
   })
 
   function convertLoadersMeshToDeckPointCloudData(attributes) {
-    const deckAttributes = {
-      getPosition: attributes.POSITION
-    };
+    let deckAttributes = {
+      getPosition: {}
+    }
+    let length = 0
+    if (Mobx.density < 30) {
+      const filter = { size: attributes.POSITION.size, value: new attributes.POSITION.value.constructor }
+      for (let i = 0; i < attributes.POSITION.value.length; i += 3) {
+        if ((i / 3) % Math.abs(30 - Mobx.density) === 0) {
+          filter.value = concatTypedArrays(filter.value, new Float32Array([attributes.POSITION.value[i], attributes.POSITION.value[i + 1], attributes.POSITION.value[i + 2]]))
+        }
+      }
+      deckAttributes = {
+        getPosition: filter
+      };
+      length = filter.value.length / filter.size
+    } else {
+      deckAttributes = {
+        getPosition: attributes.POSITION
+      };
+      length = attributes.POSITION.value.length / attributes.POSITION.size
+    }
+
 
     if (Mobx.colorization === 0) {
       if (attributes.COLOR_0) {
@@ -178,10 +199,9 @@ const View = () => {
         deckAttributes.getColor = {}
       }
     }
-    console.log(deckAttributes)
     // Check PointCloudLayer docs for other supported props?
     return {
-      length: attributes.POSITION.value.length / attributes.POSITION.size,
+      length,
       attributes: deckAttributes
     };
   }
@@ -199,6 +219,7 @@ const View = () => {
     })
 
     const data = convertLoadersMeshToDeckPointCloudData(attributes)
+    console.log(data)
     setPointData(data)
   }
 
@@ -210,13 +231,35 @@ const View = () => {
   }, []);
 
   useEffect(() => {
-    // load('/example-files/france.laz').then(_onLoad)
-    load('/example-files/richmond-azaelias.ply').then(_onLoad)
+    load('/example-files/bunny.obj').then(_onLoad)
+
+    document
+      .getElementById("deckgl-wrapper")
+      .addEventListener("contextmenu", evt => evt.preventDefault());
   }, [])
 
   useEffect(() => {
-    load('/example-files/richmond-azaelias.ply').then(_onLoad)
+    if (Mobx.exampleFile !== null) {
+      load(`/example-files/${Mobx.exampleFile}`).then(_onLoad)
+    }
   }, [Mobx.colorization])
+
+  useEffect(() => {
+    setPointSize(Mobx.pointSize)
+  }, [Mobx.pointSize])
+
+  useEffect(() => {
+    if (Mobx.exampleFile !== null) {
+      setPointData(null)
+      load(`/example-files/${Mobx.exampleFile}`).then(_onLoad)
+    }
+  }, [Mobx.exampleFile])
+
+  useEffect(() => {
+    if (Mobx.exampleFile !== null) {
+      load(`/example-files/${Mobx.exampleFile}`).then(_onLoad)
+    }
+  }, [Mobx.density])
 
   return (
     <div className='h-100 position-relative'>
@@ -235,6 +278,6 @@ const View = () => {
       />
     </div>
   )
-}
+})
 
 export default View

@@ -17,7 +17,7 @@ class Mobx {
   /**
    * Point Size
    */
-  pointSize = 0
+  pointSize = 0.5
 
   pointSizeChange(value) {
     this.pointSize = value
@@ -27,7 +27,7 @@ class Mobx {
    * Density
    */
 
-  density = 3
+  density = 30
 
   densityChange(value) {
     this.density = value
@@ -42,10 +42,10 @@ class Mobx {
     this.viewport = value
   }
 
-  file = null
+  exampleFile = 'bunny.obj'
 
-  fileChange(value) {
-    this.file = value
+  exampleFileChange(value) {
+    this.exampleFile = value
   }
 }
 

@@ -39,15 +39,16 @@ const selectStyles = {
 }
 
 const ExampleOptions = [
-  { value: 0, label: 'bunny.obj' },
-  { value: 1, label: 'bunny.drc' },
-  { value: 2, label: 'bunny.las' }
+  { value: 'bunny.obj', label: 'bunny.obj' },
+  { value: 'france.laz', label: 'france.laz' },
+  { value: 'house.laz', label: 'house.laz' },
+  { value: 'richmond-azaelias.ply', label: 'richmond-azaelias.ply' }
 ]
 
 const PointSizeOptions = [
-  { value: 0.3, label: '1' },
-  { value: 0.6, label: '2' },
-  { value: 0.9, label: '4' }
+  { value: 0.5, label: '1' },
+  { value: 0.9, label: '2' },
+  { value: 1.5, label: '4' }
 ]
 
 const ColorizationOptions = [
@@ -68,8 +69,9 @@ const FileCollapse = [
           <Select
             styles={selectStyles}
             className='react-select w-100'
-            defaultValue={ExampleOptions[0]}
+            defaultValue={ExampleOptions[3]}
             options={ExampleOptions}
+            onChange={(e) => Mobx.exampleFileChange(e.value)}
           />
         </div>
         <hr />
@@ -94,7 +96,6 @@ const CameraCollapse = [
             <span className='font-weight-bold'>Type</span>
           </CardText>
           <ButtonGroup className='mb-1'>
-            <Button outline color='info' >First-Person</Button>
             <Button outline color='info' >Orthographic</Button>
             <Button outline color='info' >Top-View</Button>
           </ButtonGroup>
@@ -125,6 +126,7 @@ const DataCollapse = [
             className='react-select w-100'
             defaultValue={PointSizeOptions[0]}
             options={PointSizeOptions}
+            onChange={(e) => Mobx.pointSizeChange(e.value)}
           />
         </div>
         <hr />
@@ -132,7 +134,7 @@ const DataCollapse = [
           <CardText>
             <span className='font-weight-bold'>Density</span>
           </CardText>
-          <Slider min={1} max={10} step={1} defaultValue={3} />
+          <Slider min={0} max={30} step={3} defaultValue={30} onChange={(e) => Mobx.densityChange(e)} />
         </div>
         <hr />
         <div className='p-3 bg-secondary'>
