@@ -36,7 +36,7 @@ class Mobx {
   /**
    * viewport
    */
-  viewport = 0
+  viewport = -1
 
   viewportChange(value) {
     this.viewport = value
@@ -53,6 +53,8 @@ class Mobx {
   spinnerChange(value) {
     this.spinner = value
   }
+
+
 }
 
 export default new Mobx()

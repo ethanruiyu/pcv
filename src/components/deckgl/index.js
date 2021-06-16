@@ -156,7 +156,6 @@ const View = observer(() => {
   })
 
   function convertLoadersMeshToDeckPointCloudData(attributes) {
-    Mobx.spinnerChange(true)
     let deckAttributes = {
       getPosition: {}
     }
@@ -209,6 +208,7 @@ const View = observer(() => {
   }
 
   const _onLoad = ({ header, loaderData, attributes, progress }) => {
+    Mobx.spinnerChange(true)
     const { maxs, mins } =
       loaderData.header.mins && loaderData.header.maxs
         ? loaderData.header
@@ -261,6 +261,25 @@ const View = observer(() => {
       load(`/example-files/${Mobx.exampleFile}`).then(_onLoad)
     }
   }, [Mobx.density])
+
+  useEffect(() => {
+    let tempViewState = {}
+    switch (Mobx.viewport) {
+      case 0:
+        tempViewState = OrbitViewState
+        tempViewState.zoom = viewState.zoom
+        // tempViewState.target = viewState.target
+        setViewState(tempViewState)
+        break
+      case 1:
+        tempViewState = TopViewState
+        tempViewState.zoom = viewState.zoom
+        // tempViewState.target = viewState.target
+        setViewState(TopViewState)
+        break
+    }
+    Mobx.viewportChange(-1)
+  }, [Mobx.viewport])
 
   return (
     <div className='h-100 position-relative'>

@@ -69,7 +69,7 @@ const FileCollapse = [
           <Select
             styles={selectStyles}
             className='react-select w-100'
-            defaultValue={ExampleOptions[3]}
+            defaultValue={ExampleOptions[0]}
             options={ExampleOptions}
             onChange={(e) => Mobx.exampleFileChange(e.value)}
           />
@@ -96,8 +96,8 @@ const CameraCollapse = [
             <span className='font-weight-bold'>Type</span>
           </CardText>
           <ButtonGroup className='mb-1'>
-            <Button outline color='info' >Orthographic</Button>
-            <Button outline color='info' >Top-View</Button>
+            <Button outline color='info' onClick={() => Mobx.viewportChange(0)}>Orthographic</Button>
+            <Button outline color='info' onClick={() => Mobx.viewportChange(1)}>Top-View</Button>
           </ButtonGroup>
         </div>
         <hr />
