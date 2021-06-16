@@ -47,6 +47,12 @@ class Mobx {
   exampleFileChange(value) {
     this.exampleFile = value
   }
+
+  spinner = false
+
+  spinnerChange(value) {
+    this.spinner = value
+  }
 }
 
 export default new Mobx()

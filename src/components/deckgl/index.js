@@ -156,6 +156,7 @@ const View = observer(() => {
   })
 
   function convertLoadersMeshToDeckPointCloudData(attributes) {
+    Mobx.spinnerChange(true)
     let deckAttributes = {
       getPosition: {}
     }
@@ -199,6 +200,7 @@ const View = observer(() => {
         deckAttributes.getColor = {}
       }
     }
+    Mobx.spinnerChange(false)
     // Check PointCloudLayer docs for other supported props?
     return {
       length,
@@ -219,7 +221,6 @@ const View = observer(() => {
     })
 
     const data = convertLoadersMeshToDeckPointCloudData(attributes)
-    console.log(data)
     setPointData(data)
   }
 
