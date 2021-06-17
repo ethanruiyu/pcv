@@ -18,7 +18,7 @@
 + `$ yarn build`
 
 ## Screenshots
-[![gQwLo4.png](https://z3.ax1x.com/2021/05/06/gQwLo4.png)](https://imgtu.com/i/gQwLo4)
+![](https://i.loli.net/2021/06/17/tuj4EDPCvA38Unq.png)
 
 ## Browser Support
 
