@@ -101,8 +101,8 @@ const TopViewState = {
   rotationX: 90,
   rotationOrbit: -45,
   // fov: 50,
-  minZoom: 0,
-  maxZoom: 10,
+  // minZoom: 0,
+  maxZoom: 50,
   zoom: 5
 }
 
@@ -112,8 +112,8 @@ const OrbitViewState = {
   rotationOrbit: -45,
   orbitAxis: 'Y',
   // fov: 50,
-  minZoom: 0,
-  maxZoom: 10,
+  // minZoom: 0,
+  maxZoom: 50,
   zoom: 5
 }
 
@@ -240,7 +240,10 @@ const View = observer(() => {
   }, [])
 
   useEffect(() => {
-    if (Mobx.exampleFile !== null) {
+    if (Mobx.file !== null) {
+      const data = new Blob([Mobx.file])
+      load(data).then(_onLoad)
+    } else if (Mobx.exampleFile !== null) {
       load(`/example-files/${Mobx.exampleFile}`).then(_onLoad)
     }
   }, [Mobx.colorization])
@@ -257,7 +260,10 @@ const View = observer(() => {
   }, [Mobx.exampleFile])
 
   useEffect(() => {
-    if (Mobx.exampleFile !== null) {
+    if (Mobx.file !== null) {
+      const data = new Blob([Mobx.file])
+      load(data).then(_onLoad)
+    } else if (Mobx.exampleFile !== null) {
       load(`/example-files/${Mobx.exampleFile}`).then(_onLoad)
     }
   }, [Mobx.density])
@@ -280,6 +286,13 @@ const View = observer(() => {
     }
     Mobx.viewportChange(-1)
   }, [Mobx.viewport])
+
+  useEffect(() => {
+    if (Mobx.file !== null) {
+      const data = new Blob([Mobx.file])
+      load(data).then(_onLoad)
+    }
+  }, [Mobx.file])
 
   return (
     <div className='h-100 position-relative'>

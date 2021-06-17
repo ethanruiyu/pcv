@@ -54,6 +54,12 @@ class Mobx {
     this.spinner = value
   }
 
+  file = null
+
+  fileChange(value) {
+    this.file = value
+  }
+
 
 }
 

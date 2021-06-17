@@ -9,7 +9,8 @@ import {
   CardText,
   CardTitle,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  CustomInput
 } from 'reactstrap'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import classnames from 'classnames'
@@ -35,14 +36,19 @@ const selectStyles = {
     color: state.isSelected ? '#17a2b8' : 'black',
     paddingLeft: 10,
     padding: 2
+  }),
+  menu: (provided) => ({
+    ...provided,
+    zIndex: 999
   })
 }
 
 const ExampleOptions = [
   { value: 'bunny.obj', label: 'bunny.obj' },
   { value: 'france.laz', label: 'france.laz' },
-  { value: 'house.laz', label: 'house.laz' },
-  { value: 'richmond-azaelias.ply', label: 'richmond-azaelias.ply' }
+  { value: 'terrain.las', label: 'terrain.las' },
+  { value: 'richmond-azaelias.ply', label: 'richmond-azaelias.ply' },
+  { value: 'global_map.drc', label: 'global_map.drc' }
 ]
 
 const PointSizeOptions = [
@@ -72,6 +78,11 @@ const FileCollapse = [
             defaultValue={ExampleOptions[0]}
             options={ExampleOptions}
             onChange={(e) => Mobx.exampleFileChange(e.value)}
+            // styles={{
+            //   menu: provided => ({ 
+            //     ...provided, zIndex: 9999 
+            //   })
+            // }}
           />
         </div>
         <hr />
@@ -79,7 +90,7 @@ const FileCollapse = [
           <CardText>
             <span className='font-weight-bold'>Upload File</span>
           </CardText>
-          <Button outline color='info'>Browse</Button>
+          <CustomInput type='file' id='exampleCustomFileBrowser' name='customFile' onChange={(e) => { Mobx.fileChange(e.target.files[0]) }} />
         </div>
       </div>
     )
