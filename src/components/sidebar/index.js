@@ -170,6 +170,7 @@ const Sidebar = props => {
 
   const handleToggle = e => {
     e.preventDefault()
+    Mobx.collapsedChange(!collapsed)
     setCollapsed(!collapsed)
   }
 
@@ -190,7 +191,7 @@ const Sidebar = props => {
           </CardTitle>
         </CardHeader>
         <CardBody className='p-0'>
-          <PerfectScrollbar component='div' style={{ maxHeight: window.innerHeight - 80 }}>
+          <PerfectScrollbar component='div' style={{ maxHeight: window.innerHeight - 120 }}>
             <AppCollapse data={FileCollapse} active={[0]} />
             <AppCollapse data={DataCollapse} active={[0]} />
             <AppCollapse data={CameraCollapse} active={[0]} />

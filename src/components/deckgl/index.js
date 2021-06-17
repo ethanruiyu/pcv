@@ -295,21 +295,19 @@ const View = observer(() => {
   }, [Mobx.file])
 
   return (
-    <div className='h-100 position-relative'>
-      <DeckGL
-        ref={deckRef}
-        id='deck'
-        layers={[axisLayer, pointCloudLayer]}
-        initialViewState={OrbitViewState}
-        views={view}
-        viewState={viewState}
-        onViewStateChange={handleViewStateChange}
-        parameters={{
-          clearColor: [0, 0, 0, 1]
-        }}
-        controller={true}
-      />
-    </div>
+    <DeckGL
+      ref={deckRef}
+      id='deck'
+      layers={[axisLayer, pointCloudLayer]}
+      initialViewState={OrbitViewState}
+      views={view}
+      viewState={viewState}
+      onViewStateChange={handleViewStateChange}
+      parameters={{
+        clearColor: [0, 0, 0, 1]
+      }}
+      controller={true}
+    />
   )
 })
 

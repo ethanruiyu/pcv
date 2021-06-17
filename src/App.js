@@ -32,7 +32,7 @@ const App = observer((props) => {
         <Col xl='3' className='h-100 p-0'>
           <Sidebar />
         </Col>
-        <Col xl='9'>
+        <Col xl='9' className={`h-100 w-100`} style={{ position: Mobx.collapsed ? 'relative' : 'initial' }}>
           <View />
         </Col>
       </Row>

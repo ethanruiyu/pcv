@@ -60,6 +60,12 @@ class Mobx {
     this.file = value
   }
 
+  collapsed = true
+
+  collapsedChange(value) {
+    this.collapsed = value
+  }
+
 
 }
 
