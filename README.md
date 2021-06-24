@@ -1,12 +1,11 @@
 # The Point Cloud Web Viewer
++ Use at [online](http://fafaisacat.com/pcv)
 
 ## Overview
 
 + Support common point cloud formats(**LAS**, **DRACO**, **PLY**, **OBJ**)
 + Based on [Deck.gl](https://github.com/visgl/deck.gl) High-performance rendering
 + Support upload files from local
-
-## Use at [online](http://fafaisacat.com/pcv)
 
 ## Installation
 
