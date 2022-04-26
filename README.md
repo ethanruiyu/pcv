@@ -1,5 +1,5 @@
 # The Point Cloud Web Viewer
-+ Use at [online](http://fafaisacat.com/pcv)
++ Use at [online](http://www.fafaisacat.com/pcv)
 
 ## Overview
 
